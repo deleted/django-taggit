@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from taggit.forms import TagField
 from taggit.models import TaggedItem, GenericTaggedItemBase
-from taggit.utils import require_instance_manager
+from taggit.utils import require_instance_manager, edit_string_for_tags
 
 
 try:
@@ -172,6 +172,13 @@ class _TaggableManager(models.Manager):
 
         for tag in tag_objs:
             self.through.objects.get_or_create(tag=tag, **self._lookup_kwargs())
+
+    @property
+    def edit_string(self):
+        """
+        Return a comma-delimited list of tags, suitible for editing by the user or generating a tag form.
+        """
+        return edit_string_for_tags( self.get_query_set().all() )
 
     @require_instance_manager
     def set(self, *tags):
