@@ -180,6 +180,9 @@ class _TaggableManager(models.Manager):
         """
         return edit_string_for_tags( self.get_query_set().all() )
 
+    def __unicode__(self):
+        return self.edit_string
+
     @require_instance_manager
     def set(self, *tags):
         self.clear()
